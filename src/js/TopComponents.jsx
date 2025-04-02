@@ -2,7 +2,7 @@ import React from 'react';
 import NewProfileForm from './NewProfileForm';
 
 
-const TopComponents = ()=>{
+const TopComponents = ({profiles, setProfiles})=>{
     const [showCreateForm, setShowCreateForm] = React.useState(false);
 
     return (
@@ -18,7 +18,7 @@ const TopComponents = ()=>{
             <div className='create-profile-container'>
                 <div className='create-profile-button' onClick={ () => setShowCreateForm(!showCreateForm) }>Create Profile</div>
             </div>
-            { showCreateForm && <NewProfileForm onClose= { ()=> setShowCreateForm(false) } /> }     
+            { showCreateForm && <NewProfileForm profiles={profiles} setProfiles={setProfiles} onClose= { ()=> setShowCreateForm(false) } /> }     
         </div>
     );
 }

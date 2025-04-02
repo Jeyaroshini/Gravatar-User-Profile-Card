@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const toastOptions = {
     position: "top-right",
-    autoClose: 10000,
+    autoClose: 2000,
     hideProgressBar: true,
     closeOnClick: true,
     pauseOnHover: true,
@@ -42,7 +42,7 @@ const WaveSVG = () => {
     );
 };
 
-const NewProfileForm = ({onClose})=>{
+const NewProfileForm = ({profiles, setProfiles, onClose})=>{
 
     const [formData, setFormData] = useState({ email: "", fullName: "", userName: "", phoneNumber: "", city: "", country: "", bio: "", socialLinks: [{label: "", url: ""}] });
     const [errors, setErrors] = useState({});
@@ -104,9 +104,12 @@ const NewProfileForm = ({onClose})=>{
         if (!validateForm()) return;
 
         try{
-            const response = await axios.post('http://127.0.0.1:5001/gravatar-user-profiles/us-central1/v1/users/profile', formData)
-            if (response.status === 201) {
+            const response = await axios.post('http://127.0.0.1:5001/gravatar-user-profiles/us-central1/v1/users/profiles', formData)
+            console.log(response);
+            if (response.status === 201 && response.data) {
                 toast.success("Profile created successfully! 🎉", toastOptions);
+                profiles[response.data.email] = response.data;
+                setProfiles({...profiles})
                 onClose();
             } 
             else {
@@ -115,6 +118,10 @@ const NewProfileForm = ({onClose})=>{
         }
         catch(err){
             console.log(err);
+            if(err.status === 400 && err.response && err.response.data && err.response.data == "User already exists"){
+                toast.error("User already exists. Please try again with different email!", toastOptions);
+                return;
+            }
             toast.error("Failed to create profile. Please try again.", toastOptions);
         }
     }

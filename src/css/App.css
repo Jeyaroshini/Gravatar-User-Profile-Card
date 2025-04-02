@@ -596,6 +596,8 @@ div#root {
   font-size: 14px;
   color: gray;
   letter-spacing: 0.5px;
+  text-align: center;
+  line-height: 20px;
 }
 
 .profile-card-item-details-bio-box {
@@ -780,9 +782,11 @@ svg.social-link {
 }
 
 .profile-card-item:hover {
-  scale: 1.2;
-  z-index: 10;
-  transition: all 0.2s ease 1s;
+  /* scale: 1.2; */
+  z-index: 10000;
+  transition: all 0.2s ease 0.1s;
+  box-shadow: 0px 0px 18px 0px #eaeaea;
+  border-radius: 20px;
 }
 
 .profile-card-item:hover .profile-card-item-details-bio {

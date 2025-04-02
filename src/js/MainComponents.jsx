@@ -31,8 +31,8 @@ const BackWaveSVG = () => {
 
 
 
-const MainComponents = ()=>{
-    const [profiles, setProfiles] = useState({});
+const MainComponents = ({profiles, setProfiles})=>{
+
     const [loading, setLoading] = useState(false);
     const [lastDocRef, setLastDocRef] = useState(null);
     const [hasMore, setHasMore] = useState(true);
@@ -98,7 +98,7 @@ const MainComponents = ()=>{
                                 <div className='profile-card-item-details'>
                                     <div className='profile-card-item-details-name-container'>
                                         <div className='profile-card-item-details-fullname'> {profiles[profileId].fullName} </div>
-                                        <div className='profile-card-item-details-username'> @{profiles[profileId].gravatar?.userName || profiles[profileId].userName} </div>
+                                        <div className='profile-card-item-details-username'> @{profiles[profileId].gravatar?.userName || profiles[profileId].userName} | { profiles[profileId].gravatar?.location || profiles[profileId].location } </div>
                                     </div>
 
                                     <div className="profile-card-item-contact-details">

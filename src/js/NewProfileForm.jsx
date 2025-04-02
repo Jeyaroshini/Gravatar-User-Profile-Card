@@ -46,6 +46,7 @@ const NewProfileForm = ({profiles, setProfiles, onClose})=>{
 
     const [formData, setFormData] = useState({ email: "", fullName: "", userName: "", phoneNumber: "", city: "", country: "", bio: "", socialLinks: [{label: "", url: ""}] });
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (event)=>{
         const { name:key, value } = event.target;
@@ -102,6 +103,7 @@ const NewProfileForm = ({profiles, setProfiles, onClose})=>{
         event.preventDefault();
         console.log(formData);
         if (!validateForm()) return;
+        setLoading(true)
 
         try{
             const response = await axios.post('http://127.0.0.1:5001/gravatar-user-profiles/us-central1/v1/users/profiles', formData)
@@ -110,9 +112,11 @@ const NewProfileForm = ({profiles, setProfiles, onClose})=>{
                 toast.success("Profile created successfully! 🎉", toastOptions);
                 profiles[response.data.email] = response.data;
                 setProfiles({...profiles})
+                setLoading(false)
                 onClose();
             } 
             else {
+                setLoading(false)
                 toast.warning("Unexpected response from server. Please try again.", toastOptions);
             }
         }
@@ -123,6 +127,7 @@ const NewProfileForm = ({profiles, setProfiles, onClose})=>{
                 return;
             }
             toast.error("Failed to create profile. Please try again.", toastOptions);
+            setLoading(false)
         }
     }
 
@@ -219,7 +224,7 @@ const NewProfileForm = ({profiles, setProfiles, onClose})=>{
 
                 <div className='prfl-form-footer'>
                     <div className='prfl-form-submit-btn' onClick={handleSubmit}>
-                        Create Profile
+                        {loading ? "Creating..." : "Create Profile"}
                     </div>
                 </div>
             </div>

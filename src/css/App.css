@@ -612,6 +612,7 @@ div#root {
   font-style: italic;
   letter-spacing: 0.4px;
   line-height: 20px;
+  overflow: scroll;
 }
 
 .profile-card-item-details-social-links {

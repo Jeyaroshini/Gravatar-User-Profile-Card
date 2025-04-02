@@ -21,8 +21,8 @@ try {
     const serviceAccount = require('./service-account-key.json');
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
-        ...(serviceAccount.project_id && { 
-            databaseURL: `https://${serviceAccount.project_id}.firebaseio.com` 
+        ...(serviceAccount.project_id && {
+            databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`
         })
     });
 } catch (error) {
@@ -59,21 +59,21 @@ app.post('/users/profiles', async (req, res) => {
     try {
         console.log("req.body", JSON.stringify(req.body));
         const { email, fullName, userName, phoneNumber, city, country, bio, socialLinks } = req.body;
-        
+
         if (!email) {
             return res.status(400).json({ error: "Email is required" });
         }
 
         const userRef = db.collection('users-profiles').doc(email);
         const snapshot = await userRef.get();
-        
+
         if (snapshot.exists) {
             return res.status(400).json({ error: 'User already exists' });
         }
 
         const emailHash = getGravatarEmailHash(email);
         let gravatar = {};
-        
+
         try {
             const response = await axios.get(`https://api.gravatar.com/v3/profiles/${emailHash}`, {
                 headers: {
@@ -87,14 +87,14 @@ app.post('/users/profiles', async (req, res) => {
 
         const gravatarData = gravatar || null;
         let gravatarCustom = null;
-        
+
         if (gravatarData) {
             gravatarCustom = {
                 userName: gravatarData.display_name || "",
                 profile_url: gravatarData.profile_url || "",
-                avatar_url: gravatarData.avatar_url ? { 
-                    url: gravatarData.avatar_url || "", 
-                    background_color: gravatarData.background_color || "" 
+                avatar_url: gravatarData.avatar_url ? {
+                    url: gravatarData.avatar_url || "",
+                    background_color: gravatarData.background_color || ""
                 } : "",
                 location: gravatarData.location || "",
                 bio: gravatarData.description || "",
@@ -120,9 +120,9 @@ app.post('/users/profiles', async (req, res) => {
         return res.status(201).json(resultData);
     } catch (error) {
         console.error("Error in /users/profiles:", error);
-        return res.status(500).json({ 
+        return res.status(500).json({
             error: "Internal server error",
-            message: error.message 
+            message: error.message
         });
     }
 });

@@ -100,7 +100,6 @@ const NewProfileForm = ({profiles, setProfiles, onClose})=>{
     };
 
     const handleSubmit = async (event)=>{
-        event.preventDefault();
         console.log(formData);
         if (!validateForm()) return;
         setLoading(true)
